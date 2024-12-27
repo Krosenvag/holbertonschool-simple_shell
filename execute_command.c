@@ -8,15 +8,31 @@
 
 void *execute_command(char *line, const char *delimiter)
 {
-        extern char **environ;
-    char *argv[100], *env_args;
-    pid_t pid;
-    int i = 0, status;
+	extern char **environ;
+	char *argv[100], *env_args;
+	pid_t pid;
+	int i = 0, status;
 
-    argv[0] = strtok(line, delimiter);
-    for (i = 1; argv[i] != NULL; ++i)
-        argv[i] = strtok(NULL, delimiter);
-    argv[i] = NULL;
+	printf("Line: '%s'\n", line);  // Afficher la ligne brute
+	argv[0] = strtok(line, delimiter);
+
+	if (argv[0] == NULL)
+	{
+		return(0);
+	}
+
+
+	for (i = 1; i < 100 && (argv[i] = strtok(NULL, delimiter)) != NULL; i++);
+	argv[i] = NULL;
+
+    // Si trop de tokens, avertir
+    if (strtok(NULL, delimiter) != NULL)
+    {
+        fprintf(stderr, "Warning: Too many tokens! Only the first 10 are considered.\n");
+    }
+
+    // Afficher les arguments extraits
+    printf("Total tokens extracted: %d\n", i);
 
     pid = fork();
     if (pid == -1)
@@ -34,6 +50,7 @@ void *execute_command(char *line, const char *delimiter)
         }
     }
     else
-                wait(&status);
-        return (NULL);
+          wait(&status);
+
+     return (0);
 }
