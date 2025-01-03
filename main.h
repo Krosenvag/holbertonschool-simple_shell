@@ -19,4 +19,5 @@ char *_strcpy(char *dest, char *src);
 char *_strdup(char *str);
 void free_grid(char **grid);
 char *_strstr(char *haystack, char *needle);
+char *get_env(char *name)
 #endif
