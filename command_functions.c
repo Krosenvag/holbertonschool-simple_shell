@@ -19,11 +19,11 @@
  *
  * Return: Void pointer (always NULL).
  */
-void *execute_command(char *line, const char *delimiter)
+int execute_command(char *line, const char *delimiter)
 {
 	char *env_args, *token, *temp_line = _strdup(line), **argv;
 	pid_t pid;
-	int i, status, j = 0;
+	int i, status, j = 0, last_return = 0;
 
 	token = strtok(temp_line, delimiter);
 	while (token != NULL)
@@ -33,10 +33,10 @@ void *execute_command(char *line, const char *delimiter)
 	}
 	argv = malloc((j + 1) * sizeof(char *));
 	if (argv == NULL)
-		return (NULL);
+		return (1);
 	argv[0] = strtok(line, delimiter);
 	if (argv[0] == NULL)
-		return (NULL);
+		return (1);
 	for (i = 1; i < j && (argv[i] = strtok(NULL, delimiter)) != NULL; i++)
 		;
 	argv[i] = NULL;
@@ -57,10 +57,12 @@ void *execute_command(char *line, const char *delimiter)
 	else
 	{
 		printf("sh: 1: %s: not found\n", argv[0]);
-		exit(127);
+		last_return = 127;
+		free(argv);
+		return (last_return);
 	}
 	free(argv);
-	return (NULL);
+	return (last_return);
 }
 
 /**

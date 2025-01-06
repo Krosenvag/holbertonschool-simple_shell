@@ -25,7 +25,7 @@ int main(void)
 	const char *delimiter = " ";
 	builtin_t builtins[] = {{"env", env_command},
 	{"exit", exit_command}, {NULL, NULL}};
-	int i, j, bool1;
+	int i, j, bool1, last_return = 0;
 
 	/* printf("\033[H\033[J"); */
 	while (1)
@@ -53,7 +53,7 @@ int main(void)
 			continue;
 		if (couleur(line) == 0)
 			continue;
-		execute_command(line, delimiter);
+		last_return = execute_command(line, delimiter);
 	}
-	return (0);
+	return (last_return);
 }
