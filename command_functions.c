@@ -58,8 +58,6 @@ int execute_command(char *line, const char *delimiter)
 	{
 		printf("sh: 1: %s: not found\n", argv[0]);
 		last_return = 127;
-		free(argv);
-		return (last_return);
 	}
 	free(argv);
 	return (last_return);
