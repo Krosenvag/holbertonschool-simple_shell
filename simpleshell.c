@@ -14,14 +14,13 @@ int main(void)
 	const char *delimiter = " ";
 	builtin_t builtins[] = {{"env", env_command},{"exit", exit_command},
 	{NULL, NULL}};
-	int i, j;
-	int bool1;
+	int i, j, bool1;
 
 	printf("\033[H\033[J");
+	if (isatty(STDOUT_FILENO)) {
 	while (1)
 	{
 	bool1 = 0;
-
         printf("HMShell:~$ ");
         if (getline(&line, &linesize, stdin) == -1)
             break;
@@ -41,6 +40,6 @@ int main(void)
 	if (couleur(line) == 0)
 		continue;
 	execute_command(line, delimiter);
-    }
+	}
     return (0);
 }
