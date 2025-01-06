@@ -28,4 +28,5 @@ char *_strstr(char *haystack, char *needle);
 void env_command(char *string);
 void *read1(void);
 size_t *_strcspn(char *str, char *str1);
+char *get_env(char *name);
 #endif
