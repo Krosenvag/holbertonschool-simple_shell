@@ -6,7 +6,7 @@ test_command() {
     echo "Testing command: $command"
 
     # Exécute la commande sur votre shell personnalisé et capture la sortie et le code de sortie
-    custom_output=$(./shell <<< "$command" 2>&1)
+    custom_output=$(./simple <<< "$command" 2>&1)
     custom_exit_code=$?
 
     # Exécute la commande sur sh et capture la sortie et le code de sortie

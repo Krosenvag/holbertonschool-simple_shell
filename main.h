@@ -8,13 +8,19 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <stdarg.h>
-
+extern char **environ;
 typedef struct builtin
 	{
 		char *name;
 		void (*func)(char *line);
 	} builtin_t;
 
+typedef struct color_map
+        {
+                char *name;
+                char *code;
+                char *message;
+        } color_map_t;
 char *find_command(const char *command);
 void exit_command(char *command);
 void *execute_command(char *line, const char *delimiter);
@@ -29,4 +35,5 @@ void env_command(char *string);
 void *read1(void);
 size_t *_strcspn(char *str, char *str1);
 char *get_env(char *name);
+void is_isatty(char *line, const char *delimiter);
 #endif
