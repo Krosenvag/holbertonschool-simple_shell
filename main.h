@@ -9,21 +9,39 @@
 #include <sys/types.h>
 #include <stdarg.h>
 extern char **environ;
+/**
+ *	struct builtin - Structure associant une commande intégrée à sa fonction
+ *	@name: Nom de la commande intégrée (ex. "cd", "exit")
+ *	@func: Pointeur vers la fonction associée à la commande
+ *
+ *	Description: Cette structure permet de mapper une commande intégrée
+ *	à la fonction correspondante pour son exécution.
+ */
 typedef struct builtin
-	{
-		char *name;
-		void (*func)(char *line);
-	} builtin_t;
+{
+	char *name;
+	void (*func)(char *line);
+} builtin_t;
 
+/**
+ *	struct color_map - Structure associant un nom à un code couleur
+ *	@name: Nom associé à une couleur (ex. "red", "blue")
+ *	@code: Code couleur correspondant (ex. "\033[0;31m" pour rouge)
+ *	@message: Message utilisant le code couleur
+ *
+ *	Description: Cette structure permet de mapper un nom de couleur à son
+ *	code ANSI correspondant et au message personnalisé utilisant cette couleur.
+ */
 typedef struct color_map
-        {
-                char *name;
-                char *code;
-                char *message;
-        } color_map_t;
+{
+	char *name;
+	char *code;
+	char *message;
+} color_map_t;
+
 char *find_command(const char *command);
 void exit_command(char *command);
-void *execute_command(char *line, const char *delimiter);
+int execute_command(char *line, const char *delimiter);
 int couleur(char *line);
 char *_strcat(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
