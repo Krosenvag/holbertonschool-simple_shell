@@ -2,12 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-void *exit_command(char *command)
+void exit_command(char *command)
 {
-        if (strcmp(command, "exit") == 0)
+        if (_strcmp(command, "exit") == 0)
         {
             free(command);
-            exit(99);
+            exit(1);
         }
-	return (NULL);
 }

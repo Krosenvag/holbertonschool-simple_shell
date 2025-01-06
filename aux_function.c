@@ -82,7 +82,7 @@ char *_strcpy(char *dest, char *src)
  * Return: a pointer to the duplicated string.
  */
 
-char *_strdup(char *str)
+char *_strdup(const char *str)
 {
 	int i, j;
 	char *array;

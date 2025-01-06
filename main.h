@@ -9,14 +9,23 @@
 #include <sys/types.h>
 #include <stdarg.h>
 
+typedef struct builtin
+	{
+		char *name;
+		void (*func)(char *line);
+	} builtin_t;
+
 char *find_command(const char *command);
-void *exit_command(char *command);
+void exit_command(char *command);
 void *execute_command(char *line, const char *delimiter);
 int couleur(char *line);
 char *_strcat(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
 char *_strcpy(char *dest, char *src);
-char *_strdup(char *str);
+char *_strdup(const char *str);
 void free_grid(char **grid);
 char *_strstr(char *haystack, char *needle);
+void env_command(char *string);
+void *read1(void);
+size_t *_strcspn(char *str, char *str1);
 #endif

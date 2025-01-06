@@ -17,13 +17,13 @@ char *find_command(const char *command)
 	{
 		if (stat(command, &st) == 0)
 		{
-			return (strdup(command));
+			return (_strdup(command));
 		}
 		return (NULL);
 	}
 	if (chemin == NULL)
 		return (NULL);
-	copie_chemin = strdup(chemin);
+	copie_chemin = _strdup(chemin);
 	if (copie_chemin == NULL)
 		return (NULL);
 	dir = strtok(copie_chemin, ":");
