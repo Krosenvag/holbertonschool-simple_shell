@@ -69,7 +69,7 @@ char *get_env(char *name)
  */
 int couleur(char *line)
 {
-	int b = 1, j;
+	int b = 1, j, i;
 
 	color_map_t colors[] = {
 		{"green", "\033[0;32m", "Color changed to green!"},
@@ -84,7 +84,7 @@ int couleur(char *line)
 		;
 	line[j] = '\0';
 
-	for (int i = 0; colors[i].name; i++)
+	for (i = 0; colors[i].name; i++)
 	{
 		if (_strcmp(line, colors[i].name) == 0)
 		{
