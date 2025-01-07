@@ -48,10 +48,6 @@ int execute_program(char *command, char **argv)
  */
 void handle_error(const char *nom_shell, const char *command, int *last_return)
 {
-	if (isatty(STDIN_FILENO))
-		printf("%s: No such file or directory\n", nom_shell);
-	else
-		printf("%s: 1: %s: not found\n", nom_shell, command);
-
+	printf("%s: 1: %s: not found\n", nom_shell, command);
 	*last_return = 127;
 }
