@@ -37,7 +37,13 @@ int main(int argc, char **argv)
 			printf("$ ");
 		}
 		if (getline(&line, &linesize, stdin) == -1)
-			break;
+		{
+			if (feof(stdin)) {
+
+       					 write(STDOUT_FILENO, "\n", 1);
+        				break;
+			}
+		}
 		for (j = 0; line[j] != '\n'; j++)
 			;
 		line[j] = '\0';
@@ -52,9 +58,9 @@ int main(int argc, char **argv)
 		}
 		if (bool1 == 1)
 			continue;
-		if (couleur(line) == 0)
-			continue;
 		last_return = execute_command(line, delimiter, argv[0]);
+		free(line);
+		line = NULL;
 	}
 	return (last_return);
 }

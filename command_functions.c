@@ -29,27 +29,32 @@ int execute_command(char *line, const char *delimiter, const char *nom_shell)
 
 	argv = malloc((j + 1) * sizeof(char *));
 	if (argv == NULL)
+	{
+		free(temp_line);
 		return (0);
-
+	}
 	argv[0] = strtok(line, delimiter);
 	if (argv[0] == NULL)
+	{
+		free(argv);
+		free(temp_line);
 		return (0);
-
+	}
 	for (i = 1; i < j && (argv[i] = strtok(NULL, delimiter)) != NULL; i++)
 		;
 	argv[i] = NULL;
-
 	env_args = find_command(argv[0]);
 	if (env_args != NULL)
 	{
 		last_return = execute_program(env_args, argv);
+		free(env_args);
 	}
 	else
 	{
 		handle_error(nom_shell, argv[0], &last_return);
 	}
-
 	free(argv);
+	free(temp_line);
 	return (last_return);
 }
 /**
@@ -124,7 +129,9 @@ char *find_command(const char *command)
 		return (NULL);
 	copie_chemin = _strdup(chemin);
 	if (copie_chemin == NULL)
+	{
 		return (NULL);
+	}
 	dir = strtok(copie_chemin, ":");
 	while (dir != NULL)
 	{
