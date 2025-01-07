@@ -11,7 +11,7 @@
  * execute_command - Executes a command line input.
  * @line: The input line containing the command.
  * @delimiter: The delimiter used to tokenize the command line.
- *
+ * @nom_shell: ok frr
  * Description: This function tokenizes the input command line, determines
  * the command to execute, and creates a child process to execute the command.
  * It handles memory allocation for arguments, forks a new process, and waits
@@ -22,47 +22,36 @@
 int execute_command(char *line, const char *delimiter, const char *nom_shell)
 {
 	char *env_args, *token, *temp_line = _strdup(line), **argv;
-	pid_t pid;
-	int i, status, j = 0, last_return = 0;
+	int i, j = 0, last_return = 0;
 
-	token = strtok(temp_line, delimiter);
-	while (token != NULL)
-	{
-		j++;
+	for (j = 0, token = strtok(temp_line, delimiter); token != NULL; j++)
 		token = strtok(NULL, delimiter);
-	}
+
 	argv = malloc((j + 1) * sizeof(char *));
 	if (argv == NULL)
-		return (1);
+		return (0);
+
 	argv[0] = strtok(line, delimiter);
 	if (argv[0] == NULL)
-		return (1);
+		return (0);
+
 	for (i = 1; i < j && (argv[i] = strtok(NULL, delimiter)) != NULL; i++)
 		;
 	argv[i] = NULL;
+
 	env_args = find_command(argv[0]);
 	if (env_args != NULL)
 	{
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("Error:");
-			exit(1);
-		}
-		if (pid == 0)
-			execve(env_args, argv, environ);
-		else
-			wait(&status);
+		last_return = execute_program(env_args, argv);
 	}
 	else
 	{
-		printf("%s: 1: %s: not found\n", nom_shell, argv[0]);
-		last_return = 127;
+		handle_error(nom_shell, argv[0], &last_return);
 	}
+
 	free(argv);
 	return (last_return);
 }
-
 /**
  * env_command - Prints the environment variables.
  * @string: The input string (unused in this function).

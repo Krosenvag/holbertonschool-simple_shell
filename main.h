@@ -38,7 +38,8 @@ typedef struct color_map
 	char *code;
 	char *message;
 } color_map_t;
-
+void handle_error(const char *nom_shell, const char *command, int *last_return);
+int execute_program(char *command, char **argv);
 char *find_command(const char *command);
 void exit_command(char *command);
 int execute_command(char *line, const char *delimiter, const char *nom_shell);
