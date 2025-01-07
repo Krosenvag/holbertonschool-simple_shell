@@ -25,26 +25,29 @@ int main(int argc, char **argv)
 	const char *delimiter = " ";
 	builtin_t builtins[] = {{"env", env_command},
 	{"exit", exit_command}, {NULL, NULL}};
-	int i, j, bool1, last_return = 0;
+	int i, j, bool1, last_return = 0, line_number = 1, eof_count = 0;
 
 	(void)argc;
-	/* printf("\033[H\033[J"); */
 	while (1)
 	{
 		bool1 = 0;
 		if (isatty(STDIN_FILENO))
-		{
 			printf("$ ");
-		}
 		if (getline(&line, &linesize, stdin) == -1)
 		{
-			if (feof(stdin)) {
-
-       					 write(STDOUT_FILENO, "\n", 1);
-        				break;
+			if(end_of_file(line, argv, &line_number, &eof_count) == 1)
+			{
+				line = NULL;
+				continue;
+			}
+			else
+			{
+				free(line);
+				break;
 			}
 		}
-		for (j = 0; line[j] != '\n'; j++)
+
+		for (j = 0; line[j] != '\n' && line[j] != '\0'; j++)
 			;
 		line[j] = '\0';
 		for (i = 0; builtins[i].name != NULL; i++)
@@ -57,10 +60,53 @@ int main(int argc, char **argv)
 			}
 		}
 		if (bool1 == 1)
+		{
+			free(line);
 			continue;
-		last_return = execute_command(line, delimiter, argv[0]);
+		}
+		last_return = execute_command(line, delimiter, argv[0], line_number);
 		free(line);
 		line = NULL;
+		line_number++;
 	}
 	return (last_return);
 }
+/*cette fonction ne fonctionne qu'à moitié, eof_count n'atteint jamais 2 ce qui nique tout*/
+int end_of_file(char *line, char **argv, int *line_number, int *eof_count)
+{
+	int bool2 = 0, i;
+	const char *delimiter = " ";
+	builtin_t builtins[] = {{"env", env_command}, {"exit", exit_command}, {NULL, NULL}};
+
+	if (line == NULL || *line == '\0')
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		return (0);
+	}
+	(*eof_count)++;
+	/*test*/
+	printf("count de ce fils de pute : %d", *eof_count);
+	/*----*/
+	 if (*eof_count == 2)
+	{
+		for (i = 0; builtins[i].name != NULL; i++)
+		{
+			if (_strcmp(builtins[i].name, line) == 0)
+			{
+				builtins[i].func(line);
+				bool2 = 1;
+				break;
+			}
+		}
+		if (bool2 == 1)
+		{
+			return (1);
+		}
+		execute_command(line, delimiter, argv[0], *line_number);
+		(*line_number)++;
+		line = NULL;
+		return (1);
+	}
+	return (0);
+}
+

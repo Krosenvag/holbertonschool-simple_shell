@@ -19,7 +19,7 @@
  *
  * Return: Void pointer (always NULL).
  */
-int execute_command(char *line, const char *delimiter, const char *nom_shell)
+int execute_command(char *line, const char *delimiter, const char *nom_shell, int line_number)
 {
 	char *env_args, *token, *temp_line = _strdup(line), **argv;
 	int i, j = 0, last_return = 0;
@@ -51,7 +51,7 @@ int execute_command(char *line, const char *delimiter, const char *nom_shell)
 	}
 	else
 	{
-		handle_error(nom_shell, argv[0], &last_return);
+		handle_error(nom_shell, argv[0], line_number, &last_return);
 	}
 	free(argv);
 	free(temp_line);

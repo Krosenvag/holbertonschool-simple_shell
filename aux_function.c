@@ -1,128 +1,86 @@
 #include "main.h"
+#include <stdlib.h> /* Pour malloc et NULL */
 
 /**
  * _strcat - concatenate a string
- * @dest: stores a string
+ * @dest: stores a string (must have enough space)
  * @src: stores a string
  * Return: pointer to string dest
  **/
-
 char *_strcat(char *dest, char *src)
 {
-	char *dest_aux;
-	const char *src_aux;
-
-	dest_aux = dest;
-	src_aux =  src;
+	char *dest_aux = dest;
 
 	while (*dest_aux != '\0')
 		dest_aux++;
 
-	while (*src_aux != '\0')
-		*dest_aux++ = *src_aux++;
+	while (*src != '\0')
+		*dest_aux++ = *src++;
 	*dest_aux = '\0';
-	return (dest);
+
+	return dest;
 }
 
 /**
- * _strcmp - concatenate a string
- * @s1: pointer of a string
- * @s2: pointers of a string
- * Return: pointer to string dest
+ * _strcmp - compare two strings
+ * @s1: pointer to the first string
+ * @s2: pointer to the second string
+ * Return: difference between the first unmatched characters
  **/
-
 int _strcmp(char *s1, char *s2)
 {
-
-	int i;
-
-	for (i = 0; s2[i] == s1[i] && s1[i] != '\0'; i++)
+	while (*s1 && (*s1 == *s2))
 	{
+		s1++;
+		s2++;
 	}
-	if (s1[i] != s2[i])
-	{
-		return ((s1[i] - s2[i]));
-	}
-	else
-	{
-		return (0);
-	}
+	return (*s1 - *s2);
 }
 
 /**
- * *_strcpy - copy the string to a buffer
- * @dest: pointer
- * @src: pointer
- * Return: 0
+ * _strcpy - copy the string to a buffer
+ * @dest: pointer to the destination buffer
+ * @src: pointer to the source string
+ * Return: pointer to dest
  **/
-
-
 char *_strcpy(char *dest, char *src)
 {
-	int r = 0;
+	char *dest_aux = dest;
 
-	for (; src[r] != '\0'; r++)
-	{
-		dest[r] = src[r];
-	}
+	while (*src != '\0')
+		*dest_aux++ = *src++;
+	*dest_aux = '\0';
 
-	dest[r] = '\0';
-
-	return (dest);
+	return dest;
 }
 
 /**
- * _strdup - copy of the string given as a parameter
+ * _strdup - duplicate a string
  * @str: string of char
  *
- * Description: The _strdup() function returns a pointer to a new string which
- * is a duplicate of the string str.
- * Returns NULL if str = NULL
+ * Description: The _strdup() function returns a pointer to a new string
+ * which is a duplicate of the string str. Returns NULL if str = NULL.
  *
- * Return: a pointer to the duplicated string.
- */
-
+ * Return: a pointer to the duplicated string, or NULL on failure.
+ **/
 char *_strdup(const char *str)
 {
-	int i, j;
+	int i;
 	char *array;
 
 	if (str == NULL)
-		return (NULL);
+		return NULL;
 
-	for (i = 0 ; str[i] != '\0' ; i++)
-	{
-	}
+	for (i = 0; str[i] != '\0'; i++)
+		;
 
 	array = malloc(sizeof(char) * (i + 1));
-
 	if (array == NULL)
-		return (NULL);
+		return NULL;
 
-	for (j = 0 ; j <= i ; j++)
-		array[j] = str[j];
-	
-	return (array);
-}
+	for (i = 0; str[i] != '\0'; i++)
+		array[i] = str[i];
+	array[i] = '\0';
 
-/**
- * free_grid - Frees a 2 dimensional grid
- * @grid: Grid to be freed
-*/
-
-void free_grid(char **grid)
-{
-	int height = 0, i;
-
-	if (!grid)
-		return;
-
-	for (i = 0; grid[i]; i++)
-		height++;
-
-	for (i = 0; i < height; i++)
-		free(grid[i]);
-
-	free(grid);
-
+	return array;
 }

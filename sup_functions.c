@@ -46,8 +46,8 @@ int execute_program(char *command, char **argv)
  * @command: Command that caused the error
  * @last_return: Pointer to the return value to update
  */
-void handle_error(const char *nom_shell, const char *command, int *last_return)
+void handle_error(const char *shell_name, const char *command, int line_number, int *last_return)
 {
-	printf("%s: 1: %s: not found\n", nom_shell, command);
+	printf("%s: %d: %s: not found\n", shell_name, line_number, command);
 	*last_return = 127;
 }
