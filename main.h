@@ -41,7 +41,7 @@ typedef struct color_map
 
 char *find_command(const char *command);
 void exit_command(char *command);
-int execute_command(char *line, const char *delimiter);
+int execute_command(char *line, const char *delimiter, const char *nom_shell);
 int couleur(char *line);
 char *_strcat(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
@@ -54,4 +54,5 @@ void *read1(void);
 size_t *_strcspn(char *str, char *str1);
 char *get_env(char *name);
 void is_isatty(char *line, const char *delimiter);
+void print_which(char **argv, char *argv0);
 #endif

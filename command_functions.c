@@ -19,7 +19,7 @@
  *
  * Return: Void pointer (always NULL).
  */
-int execute_command(char *line, const char *delimiter)
+int execute_command(char *line, const char *delimiter, const char *nom_shell)
 {
 	char *env_args, *token, *temp_line = _strdup(line), **argv;
 	pid_t pid;
@@ -56,7 +56,7 @@ int execute_command(char *line, const char *delimiter)
 	}
 	else
 	{
-		printf("sh: 1: %s: not found\n", argv[0]);
+		printf("%s: 1: %s: not found\n", nom_shell, argv[0]);
 		last_return = 127;
 	}
 	free(argv);

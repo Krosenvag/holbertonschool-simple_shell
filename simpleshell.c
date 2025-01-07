@@ -18,7 +18,7 @@
  *
  * Return: Always returns 0 upon successful execution.
  */
-int main(void)
+int main(int argc, char **argv)
 {
 	size_t linesize = 65;
 	char *line = NULL;
@@ -27,6 +27,7 @@ int main(void)
 	{"exit", exit_command}, {NULL, NULL}};
 	int i, j, bool1, last_return = 0;
 
+	(void)argc;
 	/* printf("\033[H\033[J"); */
 	while (1)
 	{
@@ -53,7 +54,7 @@ int main(void)
 			continue;
 		if (couleur(line) == 0)
 			continue;
-		last_return = execute_command(line, delimiter);
+		last_return = execute_command(line, delimiter, argv[0]);
 	}
 	return (last_return);
 }
