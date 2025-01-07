@@ -100,7 +100,7 @@ void exit_command(char *command)
 {
 	if (_strcmp(command, "exit") == 0)
 	{
-		exit(1);
+		exit(0);
 	}
 }
 
