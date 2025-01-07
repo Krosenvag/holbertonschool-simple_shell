@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 		bool1 = 0;
 		if (isatty(STDIN_FILENO))
 		{
-			printf("HMShell:~$ ");
+			printf("$ ");
 		}
 		if (getline(&line, &linesize, stdin) == -1)
 			break;
