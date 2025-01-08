@@ -15,6 +15,7 @@
  */
 int execute_program(char *command, char **argv)
 {
+
 	pid_t pid;
 	int status;
 
@@ -28,8 +29,7 @@ int execute_program(char *command, char **argv)
 	{
 		if (execve(command, argv, environ) == -1)
 		{
-			perror("execve");
-			exit(127);
+			return (8);
 		}
 	}
 	else
@@ -50,9 +50,10 @@ int execute_program(char *command, char **argv)
  * @last_return: Pointer to the return value to update
  * @line_number: contains the number of line since the beggining
  */
-void handle_error(const char *shell_name, const char *command,
-int line_number, int *last_return)
+int handle_error(const char *shell_name, const char *command,
+int line_number, int last_return)
 {
 	printf("%s: %d: %s: not found\n", shell_name, line_number, command);
-	*last_return = 127;
+	last_return = 127;
+	return (last_return);
 }

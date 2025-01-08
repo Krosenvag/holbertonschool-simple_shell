@@ -48,12 +48,13 @@ const char *nom_shell, int line_number)
 	if (env_args != NULL)
 	{
 		last_return = execute_program(env_args, argv);
-		free(env_args);
 	}
 	else
 	{
-		handle_error(nom_shell, argv[0], line_number, &last_return);
+		last_return = handle_error(nom_shell, argv[0],
+		line_number, last_return);
 	}
+	free(env_args);
 	free(argv);
 	free(temp_line);
 	return (last_return);
@@ -95,6 +96,7 @@ void env_command(char *string)
 void exit_command(char *command)
 {
 	(void)command;
+	free(command);
 	exit(0);
 }
 
@@ -113,19 +115,24 @@ void exit_command(char *command)
  */
 char *find_command(const char *command)
 {
-	char *chemin = getenv("PATH"), *copie_chemin, *chemin_entier, *dir;
+	char *chemin = get_env("PATH"), *copie_chemin, *chemin_entier, *dir;
 	struct stat st;
-
-	if (command[0] == '/' && stat(command, &st) == 0)
-		return (_strdup(command));
 
 	if (chemin == NULL)
 		return (NULL);
 
+	if (command[0] == '/' || (command[0] == '.'
+	&& command[1] == '/'))
+	{
+		if (stat(command, &st) == 0)
+			return (_strdup(command));
+	}
 	copie_chemin = _strdup(chemin);
 	if (copie_chemin == NULL)
+	{
+		free(chemin);
 		return (NULL);
-
+	}
 	dir = strtok(copie_chemin, ":");
 	while (dir)
 	{
@@ -135,6 +142,7 @@ char *find_command(const char *command)
 			sprintf(chemin_entier, "%s/%s", dir, command);
 			if (stat(chemin_entier, &st) == 0)
 			{
+				free(chemin);
 				free(copie_chemin);
 				return (chemin_entier);
 			}
@@ -142,7 +150,7 @@ char *find_command(const char *command)
 		}
 		dir = strtok(NULL, ":");
 	}
-
+	free(chemin);
 	free(copie_chemin);
 	return (NULL);
 }

@@ -33,13 +33,12 @@ int main(int argc, char **argv)
 	{
 		bool1 = 0;
 		if (isatty(STDIN_FILENO))
-			printf("$ ");
+			printf("($) ");
 		if (getline(&line, &linesize, stdin) == -1)
-			break;
+			control_d(line);
 		newline_index = _strcspn(line, "\n");
 		if (line[newline_index] == '\n')
 			line[newline_index] = '\0';
-
 		for (i = 0; builtins[i].name != NULL; i++)
 		{
 			if (_strcmp(builtins[i].name, line) == 0)
@@ -52,6 +51,7 @@ int main(int argc, char **argv)
 		if (bool1 == 1)
 		{
 			free(line);
+			line = NULL;
 			continue;
 		}
 		last_return = execute_command(line, delimiter, argv[0], line_number);
@@ -61,50 +61,20 @@ int main(int argc, char **argv)
 	}
 	return (last_return);
 }
-
 /**
- * end_of_file - Handles the end of file (EOF) and executes commands.
+ * control_d - Handles the EOF (Ctrl+D) signal in the shell.
+ * @line: The pointer to the input buffer to be freed before exiting.
  *
- * @line: The input line read from stdin.
- * @argv: The argument vector for the command.
- * @line_number: The current line number.
+ * Description:
+ * This function is called when the user sends an EOF signal (Ctrl+D)
+ * to the shell. It prints a newline, frees the memory allocated for
+ * the input buffer, and gracefully exits the program with a status of 0.
  *
- * Return: 1 if the command is executed successfully, otherwise the result of
- *         executing the command.
+ * Return: This function does not return as it exits the program.
  */
-int end_of_file(char *line, char **argv, int *line_number)
+void control_d(char *line)
 {
-	const char *delimiter = " ";
-	builtin_t builtins[] = {{"env", env_command},
-	{"exit", exit_command}, {NULL, NULL}};
-	int i, result = 0;
-
-	if (!isatty(STDIN_FILENO))
-	{
-		free(line);
-		exit(0);
-	}
-	if (line == NULL || *line == '\0')
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		free(line);
-		return (1);
-	}
-
-	for (i = 0; builtins[i].name != NULL; i++)
-	{
-		if (_strcmp(builtins[i].name, line) == 0)
-		{
-			builtins[i].func(line);
-			free(line);
-			return (1);
-		}
-	}
-
-	result = execute_command(line, delimiter, argv[0], *line_number);
-	(*line_number)++;
+	printf("\n");
 	free(line);
-	return (result);
+	exit(0);
 }
-
-

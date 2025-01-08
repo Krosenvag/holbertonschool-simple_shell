@@ -25,8 +25,8 @@ typedef struct builtin
 	void (*func)(char *line);
 } builtin_t;
 
-void handle_error(const char *shell_name, const char *command,
-int line_number, int *last_return);
+int handle_error(const char *shell_name, const char *command,
+int line_number, int last_return);
 int execute_program(char *command, char **argv);
 char *find_command(const char *command);
 void exit_command(char *command);
@@ -44,6 +44,7 @@ void read1(void);
 char *get_env(char *name);
 void is_isatty(char *line, const char *delimiter);
 void print_which(char **argv, char *argv0);
-int end_of_file(char *line, char **argv, int *line_number);
+int end_of_file(char *line, int *eof_count);
 size_t _strcspn(const char *s, const char *reject);
+void control_d(char *line);
 #endif
