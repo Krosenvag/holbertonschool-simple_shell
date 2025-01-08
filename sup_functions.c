@@ -49,6 +49,7 @@ int execute_program(char *command, char **argv)
  * @command: Command that caused the error
  * @last_return: Pointer to the return value to update
  * @line_number: contains the number of line since the beggining
+ * Return: return error value of 127
  */
 int handle_error(const char *shell_name, const char *command,
 int line_number, int last_return)

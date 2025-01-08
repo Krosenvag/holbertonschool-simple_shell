@@ -74,7 +74,8 @@ int main(int argc, char **argv)
  */
 void control_d(char *line)
 {
-	printf("\n");
+	if (isatty(STDIN_FILENO))
+		printf("\n");
 	free(line);
 	exit(0);
 }
