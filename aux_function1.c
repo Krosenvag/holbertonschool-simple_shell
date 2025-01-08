@@ -57,4 +57,31 @@ char *get_env(char *name)
 	}
 	return (NULL);
 }
+/**
+ * _strcspn - Calculates the length of the initial segment of string `s`
+ *           that does not contain any characters from string `reject`.
+ *
+ * @s: The input string to be searched.
+ * @reject: The string containing the characters to be excluded.
+ *
+ * Return: The length of the initial segment of `s` that does not contain
+ *         any characters from `reject`. If no such segment exists,
+ *         returns the length of the string `s`.
+ */
+size_t _strcspn(const char *s, const char *reject)
+{
+	size_t i, j;
+
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		for (j = 0; reject[j] != '\0'; j++)
+		{
+			if (s[i] == reject[j])
+			{
+				return (i);
+			}
+		}
+	}
+	return (i);
+}
 

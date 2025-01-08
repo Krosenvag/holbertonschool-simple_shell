@@ -26,9 +26,11 @@ int execute_program(char *command, char **argv)
 	}
 	if (pid == 0)
 	{
-		execve(command, argv, environ);
-		perror("execve");
-		exit(1);
+		if (execve(command, argv, environ) == -1)
+		{
+			perror("execve");
+			exit(127);
+		}
 	}
 	else
 	{
@@ -38,15 +40,18 @@ int execute_program(char *command, char **argv)
 		else
 			return (1);
 	}
+	return (1);
 }
 
 /**
  * handle_error - Displays an error message for invalid commands
- * @nom_shell: Name of the shell for error messages
+ * @shell_name: Name of the shell for error message
  * @command: Command that caused the error
  * @last_return: Pointer to the return value to update
+ * @line_number: contains the number of line since the beggining
  */
-void handle_error(const char *shell_name, const char *command, int line_number, int *last_return)
+void handle_error(const char *shell_name, const char *command,
+int line_number, int *last_return)
 {
 	printf("%s: %d: %s: not found\n", shell_name, line_number, command);
 	*last_return = 127;

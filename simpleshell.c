@@ -15,17 +15,18 @@
  * It continuously
  * prompts the user for input, processes the input, and executes commands until
  * an exit condition is met.
- *
+ * @argc: count the number of args
+ * @argv: list of args
  * Return: Always returns 0 upon successful execution.
  */
 int main(int argc, char **argv)
 {
-	size_t linesize = 65;
+	size_t linesize = 65, newline_index = 0;
 	char *line = NULL;
 	const char *delimiter = " ";
 	builtin_t builtins[] = {{"env", env_command},
-	{"exit", exit_command}, {NULL, NULL}};
-	int i, j, bool1, last_return = 0, line_number = 1, eof_count = 0;
+		{"exit", exit_command}, {NULL, NULL}};
+	int i, bool1, last_return = 0, line_number = 1;
 
 	(void)argc;
 	while (1)
@@ -34,22 +35,11 @@ int main(int argc, char **argv)
 		if (isatty(STDIN_FILENO))
 			printf("$ ");
 		if (getline(&line, &linesize, stdin) == -1)
-		{
-			if(end_of_file(line, argv, &line_number, &eof_count) == 1)
-			{
-				line = NULL;
-				continue;
-			}
-			else
-			{
-				free(line);
-				break;
-			}
-		}
+			break;
+		newline_index = _strcspn(line, "\n");
+		if (line[newline_index] == '\n')
+			line[newline_index] = '\0';
 
-		for (j = 0; line[j] != '\n' && line[j] != '\0'; j++)
-			;
-		line[j] = '\0';
 		for (i = 0; builtins[i].name != NULL; i++)
 		{
 			if (_strcmp(builtins[i].name, line) == 0)
@@ -71,42 +61,50 @@ int main(int argc, char **argv)
 	}
 	return (last_return);
 }
-/*cette fonction ne fonctionne qu'à moitié, eof_count n'atteint jamais 2 ce qui nique tout*/
-int end_of_file(char *line, char **argv, int *line_number, int *eof_count)
-{
-	int bool2 = 0, i;
-	const char *delimiter = " ";
-	builtin_t builtins[] = {{"env", env_command}, {"exit", exit_command}, {NULL, NULL}};
 
+/**
+ * end_of_file - Handles the end of file (EOF) and executes commands.
+ *
+ * @line: The input line read from stdin.
+ * @argv: The argument vector for the command.
+ * @line_number: The current line number.
+ *
+ * Return: 1 if the command is executed successfully, otherwise the result of
+ *         executing the command.
+ */
+int end_of_file(char *line, char **argv, int *line_number)
+{
+	const char *delimiter = " ";
+	builtin_t builtins[] = {{"env", env_command},
+	{"exit", exit_command}, {NULL, NULL}};
+	int i, result = 0;
+
+	if (!isatty(STDIN_FILENO))
+	{
+		free(line);
+		exit(0);
+	}
 	if (line == NULL || *line == '\0')
 	{
 		write(STDOUT_FILENO, "\n", 1);
-		return (0);
-	}
-	(*eof_count)++;
-	/*test*/
-	printf("count de ce fils de pute : %d", *eof_count);
-	/*----*/
-	 if (*eof_count == 2)
-	{
-		for (i = 0; builtins[i].name != NULL; i++)
-		{
-			if (_strcmp(builtins[i].name, line) == 0)
-			{
-				builtins[i].func(line);
-				bool2 = 1;
-				break;
-			}
-		}
-		if (bool2 == 1)
-		{
-			return (1);
-		}
-		execute_command(line, delimiter, argv[0], *line_number);
-		(*line_number)++;
-		line = NULL;
+		free(line);
 		return (1);
 	}
-	return (0);
+
+	for (i = 0; builtins[i].name != NULL; i++)
+	{
+		if (_strcmp(builtins[i].name, line) == 0)
+		{
+			builtins[i].func(line);
+			free(line);
+			return (1);
+		}
+	}
+
+	result = execute_command(line, delimiter, argv[0], *line_number);
+	(*line_number)++;
+	free(line);
+	return (result);
 }
+
 

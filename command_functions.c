@@ -12,6 +12,7 @@
  * @line: The input line containing the command.
  * @delimiter: The delimiter used to tokenize the command line.
  * @nom_shell: ok frr
+ * @line_number: aaaaah variable
  * Description: This function tokenizes the input command line, determines
  * the command to execute, and creates a child process to execute the command.
  * It handles memory allocation for arguments, forks a new process, and waits
@@ -19,14 +20,14 @@
  *
  * Return: Void pointer (always NULL).
  */
-int execute_command(char *line, const char *delimiter, const char *nom_shell, int line_number)
+int execute_command(char *line, const char *delimiter,
+const char *nom_shell, int line_number)
 {
 	char *env_args, *token, *temp_line = _strdup(line), **argv;
 	int i, j = 0, last_return = 0;
 
 	for (j = 0, token = strtok(temp_line, delimiter); token != NULL; j++)
 		token = strtok(NULL, delimiter);
-
 	argv = malloc((j + 1) * sizeof(char *));
 	if (argv == NULL)
 	{
@@ -57,6 +58,7 @@ int execute_command(char *line, const char *delimiter, const char *nom_shell, in
 	free(temp_line);
 	return (last_return);
 }
+
 /**
  * env_command - Prints the environment variables.
  * @string: The input string (unused in this function).
@@ -92,10 +94,8 @@ void env_command(char *string)
  */
 void exit_command(char *command)
 {
-	if (_strcmp(command, "exit") == 0)
-	{
-		exit(0);
-	}
+	(void)command;
+	exit(0);
 }
 
 /**
@@ -113,43 +113,38 @@ void exit_command(char *command)
  */
 char *find_command(const char *command)
 {
-	char *chemin = get_env("PATH"), *copie_chemin, *chemin_entier, *dir;
+	char *chemin = getenv("PATH"), *copie_chemin, *chemin_entier, *dir;
 	struct stat st;
 
-	if (command[0] == '/')
-	{
-		if (stat(command, &st) == 0)
-		{
-			return (_strdup(command));
-		}
-		return (NULL);
-	}
+	if (command[0] == '/' && stat(command, &st) == 0)
+		return (_strdup(command));
 
 	if (chemin == NULL)
 		return (NULL);
+
 	copie_chemin = _strdup(chemin);
 	if (copie_chemin == NULL)
-	{
 		return (NULL);
-	}
+
 	dir = strtok(copie_chemin, ":");
-	while (dir != NULL)
+	while (dir)
 	{
 		chemin_entier = malloc(strlen(dir) + strlen(command) + 2);
-		if (chemin_entier == NULL)
+		if (chemin_entier)
 		{
-			free(copie_chemin);
-			return (NULL);
+			sprintf(chemin_entier, "%s/%s", dir, command);
+			if (stat(chemin_entier, &st) == 0)
+			{
+				free(copie_chemin);
+				return (chemin_entier);
+			}
+			free(chemin_entier);
 		}
-		sprintf(chemin_entier, "%s/%s", dir, command);
-		if (stat(chemin_entier, &st) == 0)
-		{
-			free(copie_chemin);
-			return (chemin_entier);
-		}
-		free(chemin_entier);
 		dir = strtok(NULL, ":");
 	}
+
 	free(copie_chemin);
 	return (NULL);
 }
+
+

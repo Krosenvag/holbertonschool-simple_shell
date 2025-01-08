@@ -18,7 +18,7 @@ char *_strcat(char *dest, char *src)
 		*dest_aux++ = *src++;
 	*dest_aux = '\0';
 
-	return dest;
+	return (dest);
 }
 
 /**
@@ -51,7 +51,7 @@ char *_strcpy(char *dest, char *src)
 		*dest_aux++ = *src++;
 	*dest_aux = '\0';
 
-	return dest;
+	return (dest);
 }
 
 /**
@@ -69,18 +69,18 @@ char *_strdup(const char *str)
 	char *array;
 
 	if (str == NULL)
-		return NULL;
+		return (NULL);
 
 	for (i = 0; str[i] != '\0'; i++)
 		;
 
 	array = malloc(sizeof(char) * (i + 1));
 	if (array == NULL)
-		return NULL;
+		return (NULL);
 
 	for (i = 0; str[i] != '\0'; i++)
 		array[i] = str[i];
 	array[i] = '\0';
 
-	return array;
+	return (array);
 }
