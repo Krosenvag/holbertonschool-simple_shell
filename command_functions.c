@@ -28,6 +28,7 @@ const char *nom_shell, int line_number)
 
 	for (j = 0, token = strtok(temp_line, delimiter); token != NULL; j++)
 		token = strtok(NULL, delimiter);
+	is_more_than1(line);
 	argv = malloc((j + 1) * sizeof(char *));
 	if (argv == NULL)
 	{
@@ -47,7 +48,8 @@ const char *nom_shell, int line_number)
 	env_args = find_command(argv[0]);
 	if (env_args != NULL)
 	{
-		last_return = execute_program(env_args, argv);
+		last_return = execute_program(env_args, argv,
+		 nom_shell, &line_number);
 	}
 	else
 	{
@@ -121,10 +123,10 @@ char *find_command(const char *command)
 	if (chemin == NULL)
 		return (NULL);
 
-	if (command[0] == '/' || (command[0] == '.'
-	&& command[1] == '/'))
+	if ((command[0] == '/' && stat(command, &st) == 0)
+	|| (command[0] == '.' && command[1] == '/'))
 	{
-		if (stat(command, &st) == 0)
+		free(chemin);
 			return (_strdup(command));
 	}
 	copie_chemin = _strdup(chemin);
