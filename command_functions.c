@@ -122,12 +122,11 @@ char *find_command(const char *command)
 
 	if (chemin == NULL)
 		return (NULL);
-
-	if ((command[0] == '/' && stat(command, &st) == 0)
-	|| (command[0] == '.' && command[1] == '/'))
+	if ((command[0] == '/' && stat(command, &st) == 0) ||
+	(command[0] == '.' && command[1] == '/' && stat(command, &st) == 0))
 	{
 		free(chemin);
-			return (_strdup(command));
+		return (_strdup(command));
 	}
 	copie_chemin = _strdup(chemin);
 	if (copie_chemin == NULL)

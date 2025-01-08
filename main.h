@@ -50,4 +50,5 @@ size_t _strcspn(const char *s, const char *reject);
 int _strlen(char *s);
 void control_d(char *line);
 int is_more_than1(char *command);
+int handle_lign(char *command);
 #endif

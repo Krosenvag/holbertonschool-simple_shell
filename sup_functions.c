@@ -23,6 +23,12 @@ const char *nom_shell, int *line_number)
 	int status;
 	/*char *name = "./shell";*/
 
+	if (handle_lign(command) == 1)
+	{
+		printf("%s: %d: %s: Permission denied\n",
+		nom_shell, *line_number, command);
+		return (127);
+	}
 	pid = fork();
 	if (pid == -1)
 	{
@@ -73,8 +79,10 @@ int line_number, int last_return)
  *
  * Return:
  * - 0: If the string is empty or contains only a single character,
- *       or if no quotes are found in the string.
- * - 1: If the string contains more than one character (excluding quotes).
+ *       or if no quotes are
+ *	 found in the string.
+ * - 1: If the string contains more than
+ *      one character (excluding quotes).
  */
 int is_more_than1(char *command)
 {
@@ -88,6 +96,39 @@ int is_more_than1(char *command)
 		{
 			command[i] = ' ';
 		}
+		if (command[i] == '\\' || command[i] == '`')
+		{
+			command[i] = ' ';
+		}
+		if (command[i] == '*' || command[i] == '&')
+		{
+			command[i] = ' ';
+		}
+		if (command[i] == '#')
+		{
+			command[i] = ' ';
+		}
 	}
 	return (0);
+}
+/**
+ * handle_lign - Verifie si une chaine de caracteres
+ * contient uniquement des '/'.
+ * @command: La commande à analyser.
+ *
+ * Return: 1 si la commande est uniquement composée de '/'.
+ *         0 si la commande contient un autre caractère que '/'.
+ */
+int handle_lign(char *command)
+{
+	int i;
+
+	for (i = 0; command[i] != '\0'; i++)
+	{
+		if (command[i] != '/')
+		{
+			return (0);
+		}
+	}
+return (1);
 }
