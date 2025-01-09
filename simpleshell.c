@@ -37,24 +37,25 @@ int main(int argc, char **argv)
 		true = (getline(&line, &linesize, stdin));
 		if (true == -1)
 		{
-			if (isatty(STDIN_FILENO))
+			if (isatty(STDIN_FILENO) && line && line[0] == '\0')
+			{
 				printf("\n");
-			break;
+				free(line);
+				break;
+			}
+			if (!isatty(STDIN_FILENO))
+				break;
 		}
 		line[_strcspn(line, "\n")] = '\0';
 		for (i = 0; builtins[i].name != NULL; i++)
-		{
 			if (_strcmp(builtins[i].name, line) == 0)
 			{
 				builtins[i].func(line);
 				bool1 = 1;
 				break;
 			}
-		}
 		if (bool1 != 1)
-		{
 			last_return = execute_command(line, delimiter, argv[0], line_number);
-		}
 		free(line);
 		line = NULL;
 		line_number++;
