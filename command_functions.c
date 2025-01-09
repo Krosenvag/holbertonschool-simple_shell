@@ -146,8 +146,7 @@ char *find_command(const char *command)
 			sprintf(chemin_entier, "%s/%s", dir, command);
 			if (stat(chemin_entier, &st) == 0)
 			{
-				free(chemin);
-				free(copie_chemin);
+				free_chemin(chemin, copie_chemin);
 				return (chemin_entier);
 			}
 			free(chemin_entier);
@@ -160,3 +159,8 @@ char *find_command(const char *command)
 }
 
 
+void free_chemin(char *chemin, char *copie_chemin)
+{
+	free(chemin);
+        free(copie_chemin);
+}
