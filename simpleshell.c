@@ -76,5 +76,5 @@ void control_d(char *line)
 {
 	printf("\n");
 	free(line);
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
