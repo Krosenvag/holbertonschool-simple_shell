@@ -49,7 +49,7 @@ int end_of_file(char *line, int *eof_count);
 size_t _strcspn(const char *s, const char *reject);
 int _strlen(char *s);
 int control_d(char *str);
-int is_more_than1(char *command);
+int is_special_char(char *command);
 int handle_lign(char *command);
 int handle_point(char *command);
 void free_chemin(char *chemin, char *copie_chemin);

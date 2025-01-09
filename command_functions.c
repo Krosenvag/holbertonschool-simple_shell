@@ -12,8 +12,8 @@
  * execute_command - Executes a command line input.
  * @line: The input line containing the command.
  * @delimiter: The delimiter used to tokenize the command line.
- * @nom_shell: ok frr
- * @line_number: aaaaah variable
+ * @nom_shell: name of shell to print
+ * @line_number: variable representing the number of loop iteration
  * Description: This function tokenizes the input command line, determines
  * the command to execute, and creates a child process to execute the command.
  * It handles memory allocation for arguments, forks a new process, and waits
@@ -29,7 +29,7 @@ const char *nom_shell, int line_number)
 
 	for (j = 0, token = strtok(temp_line, delimiter); token != NULL; j++)
 		token = strtok(NULL, delimiter);
-	is_more_than1(line);
+	is_special_char(line);
 	argv = malloc((j + 1) * sizeof(char *));
 	if (argv == NULL)
 	{

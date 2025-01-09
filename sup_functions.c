@@ -79,7 +79,7 @@ int line_number, int last_return)
  * - 1: If the string contains more than
  *      one character (excluding quotes).
  */
-int is_more_than1(char *command)
+int is_special_char(char *command)
 {
 	int i;
 
