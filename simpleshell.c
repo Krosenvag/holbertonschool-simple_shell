@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 		for (i = 0; builtins[i].name != NULL; i++)
 			if (_strcmp(builtins[i].name, line) == 0)
 			{
-				builtins[i].func(line);
+				builtins[i].func(line, last_return);
 				bool1 = 1;
 				break;
 			}

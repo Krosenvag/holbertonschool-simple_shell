@@ -66,19 +66,19 @@ const char *nom_shell, int line_number)
 /**
  * env_command - Prints the environment variables.
  * @string: The input string (unused in this function).
- *
+ * @number : phantom variable to respect the structure norms
  * Description: This function iterates through the environment variables
  * and prints each one to the standard output. If the environment is
  * unavailable, the function exits without performing any operation.
  *
  * Return: Void.
  */
-void env_command(char *string)
+void env_command(char *string, int number)
 {
 	int i;
 
 	(void)string;
-
+	(void)number;
 	if (!environ)
 		return;
 
@@ -90,17 +90,17 @@ void env_command(char *string)
 /**
  * exit_command - Handles the "exit" command for the shell.
  * @command: The command string to check.
- *
+ * @last_number: return output of last command
  * Description: This function checks if the provided `command` matches
  * the string "exit". If so, it exits the program with a status of 1.
  *
  * Return: Void.
  */
-void exit_command(char *command)
+void exit_command(char *command, int last_number)
 {
 	(void)command;
 	free(command);
-	exit(EXIT_SUCCESS);
+	exit(last_number);
 }
 
 /**
