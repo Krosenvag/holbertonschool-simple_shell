@@ -48,7 +48,7 @@ void print_which(char **argv, char *argv0);
 int end_of_file(char *line, int *eof_count);
 size_t _strcspn(const char *s, const char *reject);
 int _strlen(char *s);
-void control_d(char *str, int number);
+void control_d(char *str);
 int is_more_than1(char *command);
 int handle_lign(char *command);
 #endif
