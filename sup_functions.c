@@ -67,7 +67,7 @@ int line_number, int last_return)
 }
 
 /**
- * is_more_than1 - Check if the command contains more than one character,
+ * is_special_char - Check if the command contains more than one character,
  *                 and remove quotes (both single and double) if present.
  *
  * @command: A pointer to the string (command) to be checked and processed.

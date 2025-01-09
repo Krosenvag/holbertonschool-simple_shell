@@ -158,9 +158,17 @@ char *find_command(const char *command)
 	return (NULL);
 }
 
-
+/**
+ * free_chemin - Frees the memory allocated for two strings.
+ * @chemin: Pointer to the string representing a path.
+ * @copie_chemin: Pointer to the string representing a copy of the path.
+ *
+ * This function uses the free() function to release the dynamically
+ * allocated memory for both provided strings. It is important to call
+ * this function to avoid memory leaks in the program.
+ */
 void free_chemin(char *chemin, char *copie_chemin)
 {
 	free(chemin);
-        free(copie_chemin);
+	free(copie_chemin);
 }
