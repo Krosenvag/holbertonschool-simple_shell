@@ -23,12 +23,6 @@ const char *nom_shell, int *line_number)
 	int status;
 	/*char *name = "./shell";*/
 
-	if (handle_lign(command) == 1)
-	{
-		fprintf(stderr, "%s: %d: %s: Permission denied\n",
-		nom_shell, *line_number, command);
-		return (127);
-	}
 	pid = fork();
 	if (pid == -1)
 	{
