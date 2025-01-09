@@ -52,4 +52,5 @@ int control_d(char *str);
 int is_more_than1(char *command);
 int handle_lign(char *command);
 int handle_point(char *command);
+void free_chemin(char *chemin, char *copie_chemin);
 #endif
