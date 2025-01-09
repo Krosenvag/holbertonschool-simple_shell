@@ -100,7 +100,7 @@ void exit_command(char *command)
 {
 	(void)command;
 	free(command);
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
 
 /**
