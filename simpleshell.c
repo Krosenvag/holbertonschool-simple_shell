@@ -37,8 +37,8 @@ int main(int argc, char **argv)
 		true = (getline(&line, &linesize, stdin));
 		if (true == -1)
 		{
-			if (isatty(STDIN_FILENO) && line && line[0] == '\0')
-				control_d(line);
+			if (isatty(STDIN_FILENO) && control_d(line) == 1)
+				break;
 			else if (!isatty(STDIN_FILENO))
 			{
 				free(line);
@@ -72,9 +72,14 @@ int main(int argc, char **argv)
  *
  * Return: This function does not return as it exits the program.
  */
-void control_d(char *line)
+int control_d(char *line)
 {
-	printf("\n");
+	if (line == NULL || *line == '\0')
+	{
+		printf("\n");
+		free(line);
+		exit(0);
+	}
 	free(line);
-	exit(EXIT_SUCCESS);
+	return (1);
 }
