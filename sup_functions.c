@@ -25,7 +25,7 @@ const char *nom_shell, int *line_number)
 
 	if (handle_lign(command) == 1)
 	{
-		printf("%s: %d: %s: Permission denied\n",
+		fprintf(stderr, "%s: %d: %s: Permission denied\n",
 		nom_shell, *line_number, command);
 		return (127);
 	}
@@ -39,7 +39,7 @@ const char *nom_shell, int *line_number)
 	{
 		if (execve(command, argv, environ) == -1)
 		{
-			printf("%s: %d: %s: Permission denied\n",
+			fprintf(stderr, "%s: %d: %s: Permission denied\n",
 			nom_shell, *line_number, command);
 			return (127);
 		}
@@ -66,7 +66,8 @@ const char *nom_shell, int *line_number)
 int handle_error(const char *shell_name, const char *command,
 int line_number, int last_return)
 {
-	printf("%s: %d: %s: not found\n", shell_name, line_number, command);
+	fprintf(stderr, "%s: %d: %s: not found\n",
+	shell_name, line_number, command);
 	last_return = 127;
 	return (last_return);
 }

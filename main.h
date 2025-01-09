@@ -51,4 +51,5 @@ int _strlen(char *s);
 void control_d(char *str);
 int is_more_than1(char *command);
 int handle_lign(char *command);
+int handle_point(char *command);
 #endif
