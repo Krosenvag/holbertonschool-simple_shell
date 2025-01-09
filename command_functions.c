@@ -130,7 +130,6 @@ char *find_command(const char *command)
 			free(chemin);
 			return (_strdup(command));
 		}
-	return (NULL);
 	}
 	copie_chemin = _strdup(chemin);
 	if (copie_chemin == NULL)
