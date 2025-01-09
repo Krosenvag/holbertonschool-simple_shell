@@ -32,7 +32,7 @@ const char *nom_shell, int *line_number)
 	pid = fork();
 	if (pid == -1)
 	{
-		perror("Error:");
+		fprintf(stderr, "Error:");
 		exit(1);
 	}
 	if (pid == 0)
