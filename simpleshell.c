@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	const char *delimiter = " ";
 	builtin_t builtins[] = {{"env", env_command},
 		{"exit", exit_command}, {NULL, NULL}};
-	int i, bool1, last_return = 0, line_number = 1, newline_index = 0;
+	int i, bool1, last_return = 0, line_number = 1;
 
 	(void)argc;
 	while (1)
@@ -36,13 +36,9 @@ int main(int argc, char **argv)
 			printf("($) ");
 		if ((getline(&line, &linesize, stdin) == -1))
 		{
-			if (isatty(STDIN_FILENO))
-				printf("\n");
-			break;
+			control_d(line);
 		}
-		newline_index = _strcspn(line, "\n");
-		if (line[newline_index] == '\n')
-			line[newline_index] = '\0';
+		line[_strcspn(line, "\n")] = '\0';
 		for (i = 0; builtins[i].name != NULL; i++)
 		{
 			if (_strcmp(builtins[i].name, line) == 0)
@@ -61,4 +57,22 @@ int main(int argc, char **argv)
 		line_number++;
 	}
 	return (last_return);
+}
+/**
+ * control_d - Handles the EOF (Ctrl+D) signal in the shell.
+ * @line: The pointer to the input buffer to be freed before exiting.
+ *
+ * Description:
+ * This function is called when the user sends an EOF signal (Ctrl+D)
+ * to the shell. It prints a newline, frees the memory allocated for
+ * the input buffer, and gracefully exits the program with a status of 0.
+ *
+ * Return: This function does not return as it exits the program.
+ */
+void control_d(char *line)
+{
+	if (isatty(STDIN_FILENO))
+		printf("\n");
+	free(line);
+	exit(0);
 }
