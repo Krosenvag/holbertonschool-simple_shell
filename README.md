@@ -48,4 +48,4 @@ You can use the `testsuit.sh` script to test the shell against standard `sh`. Th
 ```
 ## Authors
 - Herve Le Guennec - [Github](github.com/krosenvag)
-- Mathieu Zucalli - [Github](github.com/matzuc2)
+- Mathieu Zucalli - [Github](github.com/Matzuc2)
