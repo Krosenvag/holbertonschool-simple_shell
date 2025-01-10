@@ -1,6 +1,7 @@
 # holbertonschool-simple_shell
 ## Description
 `holbertonschool-simple_shell` is a simple UNIX command language interpreter that reads commands from either a file or standard input and executes them. This project is a basic implementation of a shell, similar to `sh`.
+# Flowchart
 ![Flowchart](./Flowchart.drawio.jpg)
 ## Features
 - Execute built-in commands like `env` and `exit`.
