@@ -38,6 +38,8 @@ char *get_env(char *name)
 
 	if (!environ)
 		return (NULL);
+	if (name == NULL)
+		return (NULL);
 	for (i = 0; environ[i]; i++)
 	{
 		buff = _strdup(environ[i]);
